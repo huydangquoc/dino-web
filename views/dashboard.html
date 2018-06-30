@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)http://www.chartjs.org/samples/latest/charts/bar/vertical.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Bar Chart</title>
+	<script src="Chart.js"></script>
+	<style type="text/css">/* Chart.js */
+@-webkit-keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}@keyframes chartjs-render-animation{from{opacity:0.99}to{opacity:1}}.chartjs-render-monitor{-webkit-animation:chartjs-render-animation 0.001s;animation:chartjs-render-animation 0.001s;}</style>
+	<script src="utils.js"></script>
+	<style>
+	canvas {
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="container" style="width: 75%;"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+		<canvas id="rating" width="593" height="296" class="chartjs-render-monitor" style="display: block; width: 593px; height: 296px;"></canvas>
+	</div>
+
+	<div id="container" style="width: 75%;"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+		<canvas id="delivery" width="593" height="296" class="chartjs-render-monitor" style="display: block; width: 593px; height: 296px;"></canvas>
+	</div>
+
+	<div id="container" style="width: 75%;"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+		<canvas id="quality" width="593" height="296" class="chartjs-render-monitor" style="display: block; width: 593px; height: 296px;"></canvas>
+	</div>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.266.1.min.js"></script>
+	<script>
+		var RATINGARR = ['1','2','3','4','5'];
+		var DELIVERYARR = ['Slow', 'OK', 'Fast'];
+		var QUALITYARR = ['Bad', 'Good', 'Normal'];
+		// var COLOR = [
+		// 	color(window.chartColors.red).alpha(0.5).rgbString(),
+		// 	color(window.chartColors.blue).alpha(0.5).rgbString(),
+		// 	color(window.chartColors.green).alpha(0.5).rgbString(),
+		// 	color(window.chartColors.orange).alpha(0.5).rgbString(),
+		// 	color(window.chartColors.purple).alpha(0.5).rgbString()
+		// ];
+		var color = Chart.helpers.color;
+
+		window.onload = function() {
+			AWS.config.update({
+				"accessKeyId": "AKIAJNJMJT2NPUKJQ4YA",
+				"secretAccessKey": "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",
+				"region": "us-east-1"
+			});
+			var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+
+			var scanParams = {
+		        TableName:  "feedback"
+		    };
+
+		    dynamodb.scan(scanParams, function(err, data) {
+		        if (err) {
+		            res.send('error');
+		        } else {
+		            // console += JSON.stringify(data) + '\n';
+		            let rating = 0;
+		            let ratings = {
+		            	'1': 0,
+		            	'2': 0,
+		            	'3': 0,
+		            	'4': 0,
+		            	'5': 0
+		            };
+		            let delivery = {
+		            	'Slow': 0,
+		            	'OK': 0,
+		            	'Fast': 0
+		            };
+		            let quality = {
+		            	'Bad': 0,
+		            	'Good': 0,
+		            	'Normal': 0
+		            };
+
+		            data.Items.forEach(function (e) {
+		            	ratings[e.RATING.S]++;
+		            	delivery[e.DELIVERY.S]++;
+		            	quality[e.QUALITY.S]++;
+		            });
+		            console.log(ratings);
+		            // res.send({
+		            // 	ratings: ratings,
+		            // 	delivery: delivery,
+		            // 	quality: quality
+		            // });
+		            // res.sendFile(path.join(app.get('views'),'dashboard.html'));
+
+		            var barChartData = {
+						labels: RATINGARR,
+						datasets: [{
+							label: '',
+							backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+							borderColor: window.chartColors.red,
+							borderWidth: 1,
+							data: [
+								ratings['1'],
+								ratings['2'],
+								ratings['3'],
+								ratings['4'],
+								ratings['5'],
+							]
+						}]
+					};
+
+					var ctx = document.getElementById('rating').getContext('2d');
+					window.myBar = new Chart(ctx, {
+						type: 'bar',
+						data: barChartData,
+						options: {
+							responsive: true,
+							legend: {
+								position: 'top',
+							},
+							title: {
+								display: true,
+								text: 'Rating'
+							}
+						}
+					});
+
+					barChartData = {
+						labels: DELIVERYARR,
+						datasets: [{
+							label: '',
+							backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+							borderColor: window.chartColors.green,
+							borderWidth: 1,
+							data: [
+								delivery['Slow'],
+								delivery['OK'],
+								delivery['Fast']
+							]
+						}]
+					};
+
+					ctx = document.getElementById('delivery').getContext('2d');
+					window.myBar = new Chart(ctx, {
+						type: 'bar',
+						data: barChartData,
+						options: {
+							responsive: true,
+							legend: {
+								position: 'top',
+							},
+							title: {
+								display: true,
+								text: 'Delivery'
+							}
+						}
+					});
+
+					barChartData = {
+						labels: QUALITYARR,
+						datasets: [{
+							label: '',
+							backgroundColor: color(window.chartColors.purple).alpha(0.5).rgbString(),
+							borderColor: window.chartColors.purple,
+							borderWidth: 1,
+							data: [
+								quality['Bad'],
+								quality['Normal'],
+								quality['Good']
+							]
+						}]
+					};
+
+					ctx = document.getElementById('quality').getContext('2d');
+					window.myBar = new Chart(ctx, {
+						type: 'bar',
+						data: barChartData,
+						options: {
+							responsive: true,
+							legend: {
+								position: 'top',
+							},
+							title: {
+								display: true,
+								text: 'Quality'
+							}
+						}
+					});
+		        }
+		    });
+
+		};
+
+		var colorNames = Object.keys(window.chartColors);
+	</script>
+
+
+
+</body></html>
