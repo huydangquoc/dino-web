@@ -4,6 +4,6 @@
 // constants configured with the values of your project. You should use that
 // file instead of this one. This is meant to show a sample of that file.
 
-const aws_bots_config = '[{"name":"","alias":"$LATEST","description":"Bot to order flowers.","bot-template":"bot-flowers","commands-help":["I would like to pick up flowers","I would like to order some flowers","Buy flowers"],"region":"us-east-1"}]';
+const aws_bots_config = '[{"name":"BotFeedback","alias":"$LATEST","description":"Bot to get feedback.","bot-template":"bot-flowers","commands-help":["I would like to give feedback","I would like to do survey"],"region":"us-east-1"}]';
 const aws_cognito_identity_pool_id = 'us-east-1:433249a2-38b7-4f4e-ad3e-98c02ac46674';
 const aws_cognito_region = 'us-east-1';

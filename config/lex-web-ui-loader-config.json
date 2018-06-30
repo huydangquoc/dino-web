@@ -3,13 +3,13 @@
     "poolId": "us-east-1:433249a2-38b7-4f4e-ad3e-98c02ac46674"
   },
   "lex": {
-    "botName": "OrderFlowers",
-    "initialText": "You can ask me for help ordering flowers. Just type \"Buy flowers\" or click on the mic and say it.",
-    "initialSpeechInstruction": "Say 'Buy Flowers' to get started."
+    "botName": "BotFeedback",
+    "initialText": "I'm here to listen to your valueable feedbacks. Just type \"Give Feedbacks\" or click on the mic and say it.",
+    "initialSpeechInstruction": "Say 'Give Feedbacks' to get started."
   },
   "ui": {
     "parentOrigin": "",
-    "toolbarTitle": "Order Flowers",
+    "toolbarTitle": "Give Feedbacks",
     "toolbarLogo": "",
     "pushInitialTextOnRestart": false
   },
