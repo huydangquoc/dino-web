@@ -36,8 +36,6 @@ app.use('/dinosaur', function (req, res, next) {
 	res.sendFile(path.join(app.get('views'),'dinosaur.html'));
 });
 
-var html = ''
-
 app.use('/dashboard', function (req, res, next) {
     res.sendFile(path.join(app.get('views'),'dashboard.html'));
 });
