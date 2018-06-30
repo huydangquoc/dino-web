@@ -38,6 +38,22 @@
       // In this case, we are just passing one option (which doesn't changethe
       // default) for illustration purposes.
       var loaderOpts = {
+
+
+
+
+  // controls whether the config should be obtained using events
+  shouldLoadConfigFromEvent: true,
+
+  // controls whether the config should be downloaded from `configUrl`
+  shouldLoadConfigFromJsonFile: false,
+
+  // controls whether the config should be downloaded from Mobile Hub aws-config.js
+  shouldLoadConfigFromMobileHubFile: false,
+
+
+
+
         // The following option controls if the local config should be ignored
         // when running this page embedded in an iframe.
         // If set to true, only passes the parentOrigin field when run as an
