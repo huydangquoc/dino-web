@@ -39,47 +39,7 @@ app.use('/dinosaur', function (req, res, next) {
 var html = ''
 
 app.use('/dashboard', function (req, res, next) {
-	var scanParams = {
-        TableName:  "feedback"
-    };
-
-    dynamodb.scan(scanParams, function(err, data) {
-        if (err) {
-            res.send('error');
-        } else {
-            // console += JSON.stringify(data) + '\n';
-            let rating = 0;
-            let ratings = {
-            	'1': 0,
-            	'2': 0,
-            	'3': 0,
-            	'4': 0,
-            	'5': 0
-            };
-            let delivery = {
-            	'Slow': 0,
-            	'OK': 0,
-            	'Fast': 0
-            };
-            let quality = {
-            	'Bad': 0,
-            	'Good': 0,
-            	'Normal': 0
-            };
-
-            data.Items.forEach(function (e) {
-            	ratings[e.RATING.S]++;
-            	delivery[e.DELIVERY.S]++;
-            	quality[e.QUALITY.S]++;
-            });
-            // res.send({
-            // 	ratings: ratings,
-            // 	delivery: delivery,
-            // 	quality: quality
-            // });
-            res.sendFile(path.join(app.get('views'),'dashboard.html'));
-        }
-    });
+    res.sendFile(path.join(app.get('views'),'dashboard.html'));
 });
 
 app.use('/testdb', async function (req, res, next) {
