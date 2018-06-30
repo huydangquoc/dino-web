@@ -39,20 +39,9 @@
       // default) for illustration purposes.
       var loaderOpts = {
 
-
-
-
-  // controls whether the config should be obtained using events
-  shouldLoadConfigFromEvent: true,
-
-  // controls whether the config should be downloaded from `configUrl`
-  shouldLoadConfigFromJsonFile: false,
-
-  // controls whether the config should be downloaded from Mobile Hub aws-config.js
-  shouldLoadConfigFromMobileHubFile: false,
-
-
-
+        // URL to download config JSON file
+        // uses baseUrl if set as a relative URL (not starting with http)
+        configUrl: './lex-web-ui-loader-config.json',
 
         // The following option controls if the local config should be ignored
         // when running this page embedded in an iframe.
